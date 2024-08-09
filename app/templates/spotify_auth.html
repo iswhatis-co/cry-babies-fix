@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Authentication</title>
+    <script>
+        function detectPlatform() {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            if (/android/i.test(userAgent)) {
+                return 'android';
+            }
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                return 'ios';
+            }
+            return 'web';
+        }
+
+        function authenticate() {
+            var platform = detectPlatform();
+            var authUrl = {
+                web: "{{ auth_urls['web'] | safe }}",
+                android: "{{ auth_urls['android'] | safe }}",
+                ios: "{{ auth_urls['ios'] | safe }}"
+            }[platform];
+
+            if (platform === 'android' || platform === 'ios') {
+                // For mobile platforms, try to open the Spotify app
+                window.location.href = authUrl;
+                
+                // If the app doesn't open within 2 seconds, fallback to web auth
+                setTimeout(function() {
+                    window.location.href = "{{ auth_urls['web'] | safe }}";
+                }, 2000);
+            } else {
+                // For web, just redirect
+                window.location.href = authUrl;
+            }
+        }
+
+        // Automatically trigger authentication when the page loads
+        window.onload = authenticate;
+    </script>
+</head>
+<body>
+    <h1>Authenticating with Spotify...</h1>
+    <p>If you're not redirected automatically, <a href="#" onclick="authenticate()">click here</a>.</p>
+</body>
+</html>
