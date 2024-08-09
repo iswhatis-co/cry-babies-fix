@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cassie's Trauma List</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='chfavicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_styles.css') }}">
+    <link rel="preload" href="{{ url_for('static', filename='images/cassie-henderson-the-pink-chapter-background.webp') }}" as="image">
+    <link rel="preload" href="{{ url_for('static', filename='fonts/newspiritregularcondensed.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ url_for('static', filename='fonts/newspiritlightcondensed.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ url_for('static', filename='fonts/Lacquer-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/2.11.0/bundled.min.js"></script>
+    <script>
+        function updateScaleFactor() {
+            let scaleFactor = Math.min(window.innerWidth / document.documentElement.clientWidth, window.innerHeight / document.documentElement.clientHeight);
+            document.documentElement.style.setProperty('--scale-factor', scaleFactor);
+        }
+
+        window.addEventListener('resize', updateScaleFactor);
+        window.addEventListener('DOMContentLoaded', updateScaleFactor);
+    </script>
+    <style>
+        #loading-overlay {
+            background-color: rgba(0, 0, 0, 0.5); /* Change the background color */
+            color: white; /* Change the text color if any */
+            display: none; /* Initially hide the overlay */
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3); /* Light grey */
+            border-top: 4px solid transparent; /* Transparent */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite, color-change 3s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes color-change {
+            0% { border-top-color: #b182b0; } /* Pink */
+            33% { border-top-color: #E0B70D; } /* Yellow */
+            66% { border-top-color: #6792b5; } /* Blue */
+            100% { border-top-color: #b182b0; } /* Pink */
+        }
+        /* New styles for responsive layout */
+        #content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .form-inputs {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
+        }
+        #playlist-form input[type="text"].button,
+        #playlist-form #spotify-login-btn {
+            flex: 1;
+            margin: 0 5px;
+        }
+        @media (max-width: 480px) {
+            .form-inputs {
+                flex-direction: column;
+            }
+            #playlist-form input[type="text"].button,
+            #playlist-form #spotify-login-btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div class="container flex-center">
+            <img src="{{ url_for('static', filename='images/coolgirlscry.webp') }}" id="frame-image" alt="Frame Image">
+            <h4 id="cassies-pain-your-shame-trauma-list" class="text-center">
+                cassie's pain + your shame = <span class="p1">TRAUMA LIST</span>
+            </h4>
+            <form id="playlist-form">
+                {{ form.csrf_token }}
+                <div class="form-inputs">
+                    {{ form.user_name(placeholder="first name", class="button", required=true, autocomplete="name") }}
+                    <button type="submit" id="spotify-login-btn" class="button">
+                        <span>create with</span>
+                        <img src="{{ url_for('static', filename='images/Spotify_Icon_RGB_White.png') }}" alt="Spotify Logo">
+                    </button>
+                </div>
+                <div class="divider"></div>
+                <h3 class="text-center">want more?</h3>
+                <div class="checkbox-group">
+                    <div class="checkbox-container">
+                        {{ form.spotify_subscribe() }}
+                        <label for="{{ form.spotify_subscribe.id }}" class="checkbox-label">
+                            <span class="p2">get playlists from Cassie added to your Spotify</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-container">
+                        {{ form.mailing_list() }}
+                        <label for="{{ form.mailing_list.id }}" class="checkbox-label">
+                            <span class="p2">subscribe to Cassie's Cry Babies email list</span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+            <div id="error-message"></div>
+            <h5>By authorising your Spotify account, we'll be able to tailor and enhance your playlist experience. You can revoke access and find more information by viewing our <a href="https://cassiehenderson.com/privacy" style="color: inherit;">privacy policy</a>.</h5>
+        </div>
+    </div>
+    <div id="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+    <script>
+        function sendLog(level, message) {
+            $.ajax({
+                url: '/log',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ level: level, message: message }),
+                success: function(response) {
+                    console.log("Log sent successfully:", response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error sending log:", status, error);
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const content = document.getElementById('content');
+            const frameImage = document.getElementById('frame-image');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const errorMessage = document.getElementById('error-message');
+
+            Promise.all([
+                document.fonts.load("1em Lacquer"),
+                document.fonts.load("1em 'New Spirit'"),
+                document.fonts.load("1em 'Aktiv Grotesk'"),
+                document.fonts.load("1em 'Jeff Script'"),
+                new Promise((resolve) => {
+                    if (frameImage.complete) {
+                        resolve();
+                    } else {
+                        frameImage.onload = resolve;
+                    }
+                }),
+                new Promise((resolve) => {
+                    const img = new Image();
+                    img.src = "{{ url_for('static', filename='images/cassie-henderson-the-pink-chapter-background.webp') }}";
+                    img.onload = resolve;
+                })
+            ]).then(() => {
+                setTimeout(() => {
+                    content.classList.add('fade-in');
+                }, 100);
+            }).catch(error => {
+                console.error('Error loading assets:', error);
+                sendLog('error', 'Error loading assets: ' + error);
+                content.classList.add('fade-in');
+                hideLoading(); // Add this line
+            });
+        });
+
+        function detectPlatform() {
+            const result = bowser.getParser(window.navigator.userAgent);
+            const platformType = result.getPlatformType(true);
+            
+            if (platformType === 'mobile') {
+                if (result.getOSName(true) === 'ios') {
+                    return 'ios';
+                } else if (result.getOSName(true) === 'android') {
+                    return 'android';
+                }
+            }
+            return 'web';
+        }
+
+        function showLoading() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('error-message');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('error-message').style.display = 'none';
+        }
+        function handleSpotifyAuth(redirectUrl) {
+            const platform = detectPlatform();
+            console.log("Detected platform:", platform);
+            sendLog('info', 'Detected platform: ' + platform);
+            console.log("Redirect URL:", redirectUrl);
+            sendLog('info', 'Redirect URL: ' + JSON.stringify(redirectUrl));
+
+            const platformSpecificUrl = redirectUrl[platform] || redirectUrl.web;
+            console.log("URL being used:", platformSpecificUrl);
+            sendLog('info', 'URL being used: ' + platformSpecificUrl);
+
+            hideError();
+
+            if (platform === 'ios') {
+                handleIOSAuth(platformSpecificUrl, redirectUrl.web);
+            } else if (platform === 'android') {
+                handleAndroidAuth(platformSpecificUrl, redirectUrl.web);
+            } else {
+                // For web, we can show the loading overlay before redirecting
+                showLoading();
+                window.location = platformSpecificUrl;
+            }
+        }
+
+        function handleIOSAuth(iosUrl, webFallback) {
+            const modifiedIOSUrl = 'spotify-action://authorize' + iosUrl.split('authorize')[1];
+            console.log("iOS URL:", modifiedIOSUrl);
+            sendLog('info', 'iOS URL: ' + modifiedIOSUrl);
+
+            showLoading(); // Show loading overlay before attempting to open the app
+
+            const appTimeout = setTimeout(() => {
+                hideLoading();
+                window.location = webFallback;
+            }, 2000);
+
+            window.location = modifiedIOSUrl;
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    clearTimeout(appTimeout);
+                    hideLoading();
+                }
+            });
+        }
+
+        function handleAndroidAuth(androidUrl, webFallback) {
+            const spotifyPackage = 'com.spotify.music';
+            const modifiedAndroidUrl = androidUrl.replace('intent://', '').replace('#Intent;', '');
+            const intentUrl = `intent://${modifiedAndroidUrl}#Intent;package=${spotifyPackage};scheme=https;end`;
+
+            console.log("Android URL:", intentUrl);
+            sendLog('info', 'Android URL: ' + intentUrl);
+
+            showLoading(); // Show loading overlay before attempting to open the app
+
+            // Try to open the Spotify app
+            window.location.href = intentUrl;
+
+            // Set a timeout to check if the app was opened
+            setTimeout(() => {
+                // If we're still on the same page, the app probably didn't open
+                if (document.hidden) {
+                    hideLoading();
+                } else {
+                    console.log("Spotify app did not open, falling back to web auth");
+                    sendLog('info', 'Spotify app did not open, falling back to web auth');
+                    hideLoading();
+                    window.location.href = webFallback;
+                }
+            }, 2000);
+        }
+
+        $(document).ready(function() {
+            $('#playlist-form').on('submit', function(e) {
+                e.preventDefault();
+                let userName = $('#user_name').val().toLowerCase();  // Convert to lowercase
+                const mailingList = $('#mailing_list').is(':checked');
+                const spotifySubscribe = $('#spotify_subscribe').is(':checked');
+                
+                console.log("spotify_subscribe value:", spotifySubscribe);
+                sendLog('info', 'spotify_subscribe value: ' + spotifySubscribe);
+
+                showLoading();
+
+                $.ajax({
+                    url: '{{ url_for("main_flow_bp.index") }}',
+                    method: 'POST',
+                    data: {
+                        user_name: userName,
+                        mailing_list: mailingList,
+                        spotify_subscribe: spotifySubscribe,
+                        csrf_token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log("Response received:", response);
+                        sendLog('info', 'Response received: ' + JSON.stringify(response));
+                        if (response && response.redirect_url) {
+                            handleSpotifyAuth(response.redirect_url);
+                        } else {
+                            hideLoading();
+                            showError("Invalid response from server. Please try again.");
+                            console.error("Invalid response format. Expected 'redirect_url' property.");
+                            sendLog('error', "Invalid response format. Expected 'redirect_url' property. Full response: " + JSON.stringify(response));
+                            console.error("Full response:", JSON.stringify(response));
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        hideLoading();
+                        showError("An error occurred. Please try again later.");
+                        console.error("AJAX Error:", status, error);
+                        sendLog('error', "AJAX Error: " + status + ", " + error + ". Response Text: " + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
