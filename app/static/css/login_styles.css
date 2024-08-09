@@ -1,0 +1,423 @@
+@font-face {
+    font-family: 'Lacquer';
+    src: url('/static/fonts/Lacquer-Regular.woff2') format('woff2'),
+         url('/static/fonts/Lacquer-Regular.woff') format('woff'),
+         url('/static/fonts/Lacquer-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'New Spirit';
+    src: url('/static/fonts/newspiritregularcondensed.woff2') format('woff2'),
+         url('/static/fonts/newspiritregularcondensed.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'New Spirit Light';
+    src: url('/static/fonts/newspiritlightcondensed.woff2') format('woff2'),
+         url('/static/fonts/newspiritlightcondensed.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Typeka Regular';
+    src: url('/static/fonts/Typeka-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    background-color: #b182b0;
+    color: #38383b;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    z-index: -1;
+    background-image: url("/static/images/cassie-henderson-the-pink-chapter-background.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: contrast(110%) brightness(85%);
+}
+
+#content {
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+#content.fade-in {
+    opacity: 1;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.flex-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#frame-image {
+    max-width: 85vw;
+    max-height: 55vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 25px 8px rgba(0, 0, 0, 0.2));
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 2px solid #38383b;
+    margin: 0;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    background-color: transparent;
+    margin: 0 5px 2px 0;
+    vertical-align: middle;
+}
+
+input[type="checkbox"]:checked::before {
+    content: '\2714';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    color: #38383b;
+}
+
+input[type="text"].button {
+    background-color: #38383b;
+    text-align: center;
+}
+
+input[type="text"].button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+#playlist-form {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    max-width: 400px;
+    margin: 10px auto;
+}
+
+#playlist-form input[type="text"].button,
+#playlist-form #spotify-login-btn {
+    flex: 1;
+    margin: 0 5px;
+    height: 40px;
+    min-height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+#playlist-form input[type="text"].button {
+    text-align: center;
+    display: block;
+}
+
+#playlist-form #spotify-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    background-color: #38383b;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+#playlist-form #spotify-login-btn img {
+    height: 24px;
+    margin-left: 5px;
+}
+
+.button {
+    padding: 5px 10px;
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+    background-color: #38383b;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'New Spirit Light', sans-serif;
+    box-sizing: border-box;
+    height: 40px;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button:hover {
+    background-color: #1db954;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.button:active {
+    background-color: #1ed760;
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#spotify-login-btn {
+    background-color: #38383b;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+#spotify-login-btn img {
+    height: 24px;
+    margin-left: 5px;
+    transition: filter 0.3s ease;
+}
+
+#spotify-login-btn:hover {
+    background-color: #38383b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+#spotify-login-btn:hover img {
+    filter: brightness(0) saturate(100%) invert(59%) sepia(82%) saturate(2252%) hue-rotate(121deg) brightness(95%) contrast(101%);
+}
+
+#spotify-login-btn:active {
+    background-color: #38383b;
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 5px 0;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px 0;
+}
+
+.checkbox-label {
+    font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+    margin-left: 5px;
+    color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.checkbox-label .p2 {
+    margin-left: 5px;
+}
+
+.divider {
+    width: 80%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 10px 0;
+}
+
+#cassies-pain-your-shame-trauma-list {
+    margin-bottom: 5px;
+}
+
+h3, h4, h5 {
+    margin: 5px 0;
+    text-align: center;
+}
+
+h3 {
+    font-family: 'New Spirit', sans-serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    color: #38383b;
+    margin-top: 10px;
+    margin-bottom: 1px;
+}
+
+h3.text-center {
+    font-size: clamp(1rem, 3vw, 1.8rem);
+    margin-bottom: 0px;
+}
+
+h4 {
+    font-family: 'New Spirit', sans-serif;
+    font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+    color: #38383b;
+    margin-top: 10px;
+}
+
+h5 {
+    font-family: 'New Spirit Light', sans-serif;
+    font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+    color: #38383b;
+    margin-bottom: 0.3rem;
+}
+
+.p1 {
+    font-family: 'Lacquer', cursive;
+    color: #f5f5f5;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    text-transform: uppercase;
+}
+
+.p2 {
+    font-family: 'Typeka Regular', sans-serif;
+    color: #f5f5f5;
+    font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+    line-height: 1.2;
+    margin: 0;
+}
+
+#error-message {
+    display: none;
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-height: 600px) {
+    #frame-image {
+        max-height: 30vh;
+    }
+
+    h3, h4, h5 {
+        margin: 2px 0;
+    }
+
+    .form-inputs {
+        margin: 5px 0;
+    }
+
+    .checkbox-container {
+        margin: 1px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-inputs {
+        flex-direction: column;
+    }
+
+    #playlist-form input[type="text"].button,
+    #playlist-form #spotify-login-btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
