@@ -1,0 +1,409 @@
+/* Reset and normalize styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Global styles */
+body {
+  font-family: 'Aktiv Grotesk', sans-serif;
+  background-color: #b182b0;
+  color: #38383b;
+  line-height: 1.6;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Typography using specific fonts */
+h1 {
+  font-family: 'New Spirit Bold', sans-serif;
+  color: #38383b;
+  font-size: 3.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-family: 'New Spirit SemiBold', sans-serif;
+  color: #38383b;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 0.8rem;
+}
+
+h3 {
+  font-family: 'New Spirit Medium', sans-serif;
+  color: #38383b;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 0.6rem;
+}
+
+h4 {
+  font-family: 'New Spirit', sans-serif;
+  color: #38383b;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 0.4rem;
+}
+
+h5 {
+  font-family: 'New Spirit Light', sans-serif;
+  color: #38383b;
+  font-size: 0.7rem;
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.lacquer-text {
+  font-family: 'Lacquer', sans-serif;
+}
+
+.new-spirit-text {
+  font-family: 'New Spirit', serif;
+}
+
+.jeff-script-text {
+  font-family: 'Jeff Script', cursive;
+}
+
+.p1, .trauma-text {
+  font-family: 'Lacquer', cursive;
+  color: #38383b;
+  font-size: 1.1rem; /* Adjusted to match button */
+  text-align: center;
+  display: flex; /* Centers content vertically */
+  align-items: center; /* Centers content vertically */
+  justify-content: center; /* Centers content horizontally */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box; /* Ensures padding is included in height */
+  height: 40px; /* Explicit height */
+}
+
+.p2 {
+  font-family: 'Jeff Script', sans-serif;
+  color: #38383b;
+  font-size: 0.75rem;
+  text-align: center;
+  margin-bottom: 0.2rem;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.p3 {
+  font-family: 'AktivGrotesk Bold', sans-serif;
+  color: #38383b;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 0.3rem;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.p4 {
+  font-family: 'AktivGrotesk Medium', sans-serif;
+  color: #38383b;
+  font-size: 0.75rem;
+  text-align: center;
+  margin-bottom: 0.2rem;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.p5 {
+  font-family: 'AktivGrotesk Light', sans-serif;
+  color: #38383b;
+  font-size: 0.65rem;
+  text-align: center;
+  margin-bottom: 0.1rem;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+/* Layout */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+  /*padding-top: 2rem;*/
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Adjust width as necessary */
+}
+
+.container-small {
+  max-width: 600px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Adjust width as necessary */
+}
+
+.container-large {
+  max-width: 1200px;
+  padding: 2rem;
+}
+/* Forms */
+form {
+  margin-top: 2rem;
+}
+
+label {
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="submit"] {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input[type="submit"] {
+  background-color: #EC7EE9;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: #d667d2;
+}
+
+/* Mobile responsive styles */
+.animation-container.small-margin {
+  margin-top: 10px;
+}
+
+.animation-container.very-small-margin {
+  margin-top: 5px;
+}
+
+#textElement.small-font {
+  font-size: 1.15rem;
+}
+
+#textElement.very-small-font {
+  font-size: 1.05rem;
+}
+
+@font-face {
+    font-family: 'AktivGrotesk Bold';
+    src: url('/static/fonts/aktivgrotesk-bold.woff2') format('woff2'),
+         url('/static/fonts/aktivgrotesk-bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'AktivGrotesk Light';
+    src: url('/static/fonts/aktivgrotesk-light.woff2') format('woff2'),
+         url('/static/fonts/aktivgrotesk-light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'AktivGrotesk Medium';
+    src: url('/static/fonts/aktivgrotesk-medium.woff2') format('woff2'),
+         url('/static/fonts/aktivgrotesk-medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Jeff Script';
+    src: url('/static/fonts/jeffscriptregular.woff2') format('woff2'),
+         url('/static/fonts/jeffscriptregular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Lacquer';
+    src: url('/static/fonts/Lacquer-Regular.woff2') format('woff2'),
+        url('/static/fonts/Lacquer-Regular.woff') format('woff'),
+        url('/static/fonts/Lacquer-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'New Spirit Bold';
+    src: url('/static/fonts/newspiritboldcondensed.woff2') format('woff2'),
+         url('/static/fonts/newspiritboldcondensed.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'New Spirit Light';
+    src: url('/static/fonts/newspiritlightcondensed.woff2') format('woff2'),
+         url('/static/fonts/newspiritlightcondensed.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'New Spirit Medium';
+    src: url('/static/fonts/newspiritmediumcondensed.woff2') format('woff2'),
+         url('/static/fonts/newspiritmediumcondensed.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'New Spirit';
+    src: url('/static/fonts/newspiritregularcondensed.woff2') format('woff2'),
+         url('/static/fonts/newspiritregularcondensed.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+  font-family: 'New Spirit';
+  src: url('/static/fonts/newspiritsemiboldcondensed.woff2') format('woff2'),
+       url('/static/fonts/newspiritsemiboldcondensed.woff') format('woff'),
+       url('/static/fonts/NewSpiritSemiBoldCondensed.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+
+.loading-ghost-body {
+  font-family: 'Lacquer', sans-serif; 
+  font-size: 2rem;
+  color: #38383b;
+  background-color: #b182b0;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative; 
+}
+
+.centered-body {
+  font-family: 'Lacquer', sans-serif; 
+  font-size: 2rem;
+  color: #38383b;
+  background-color: #b182b0;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative; 
+}
+.animation-container {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%; /* Full viewport width */
+  height: 100%; /* Full viewport height */
+  object-fit: contain;
+  overflow: hidden; /* Prevents overflow */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.animation-container img {
+  position: absolute;
+  width: auto;
+  height: auto;
+  object-fit: cover; /* Cover the container without losing aspect ratio */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the image */
+}
+
+#textElement {
+  position: absolute;
+  margin-top: 320px; /* Adjust based on your design needs */
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  text-align: center;
+  color: #38383b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.button {
+  padding: 20px;
+  font-size: 1.1rem;
+  background-color: #38383b;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'New Spirit Light', sans-serif;
+  box-sizing: border-box;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:hover {
+  background-color: #2a2a2e;
+}
+
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+@media (max-width: 400px) {
+  .animation-container {
+      margin-top: 5px; /* very-small-margin */
+  }
+  #textElement {
+      font-size: 1.05rem; /* very-small-font */
+  }
+}
+
+@media (max-width: 600px) {
+  .animation-container {
+      margin-top: 5px; /* small-margin */
+  }
+  #textElement {
+      font-size: 1.15rem; /* small-font */
+  }
+}
+
+.margin-top {
+  margin-top: 20px; /* Adjust the value as needed */
+}
