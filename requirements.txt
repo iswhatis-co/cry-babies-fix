@@ -1,0 +1,12 @@
+Flask
+Flask_Migrate
+Flask-Session
+Flask-SQLAlchemy
+Pillow
+python-dotenv
+redis
+Requests
+psycopg2
+Flask-WTF
+Flask-Script
+gunicorn
