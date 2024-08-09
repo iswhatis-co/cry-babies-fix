@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="{{ url_for('favicon') }}">
+    <link rel="preload" href="{{ url_for('static', filename='images/cassie-henderson-the-pink-chapter-background.webp') }}" as="image">
+    <title>cool girls cry | Cassie Henderson </title>
+    <style>
+        body {
+            background-color: #b182b0;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+            z-index: -1;
+            background-image: url("{{ url_for('static', filename='images/cassie-henderson-the-pink-chapter-background.webp') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: contrast(110%) brightness(85%);
+        }
+        #content.fade-in {
+            opacity: 1;
+        }
+            #generated-image {
+            max-height: 65vh;
+            max-width: 85vw;
+            height: auto;
+            width: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 25px 8px rgba(0, 0, 0, 0.2));
+        }
+    </style>
+</head>
+<body class="centered-body">
+    <div id="content" class="container">
+        <img id="generated-image" src="{{ url_for('main_flow_bp.generated_image', playlist_name=session['playlist_name']) }}" alt="Generated Image">
+        <h4 style="display: inline;">your pity party awaits...</h4>
+        <a class="button" style="text-align: center; text-decoration: none;" href="{{ playlist_url }}">
+            open in spotify
+            <img src="{{ url_for('static', filename='images/Spotify_Icon_RGB_White.png') }}" alt="Spotify Logo" style="height: 24px; vertical-align: middle; margin-left: 10px;">
+        </a>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const content = document.getElementById('content');
+            const generatedImage = document.getElementById('generated-image');
+            const spotifyIcon = document.querySelector('.button img');
+
+            Promise.all([
+                new Promise((resolve) => {
+                    if (generatedImage.complete) {
+                        resolve();
+                    } else {
+                        generatedImage.onload = resolve;
+                    }
+                }),
+                new Promise((resolve) => {
+                    if (spotifyIcon.complete) {
+                        resolve();
+                    } else {
+                        spotifyIcon.onload = resolve;
+                    }
+                }),
+                // Wait for background image to load
+                new Promise((resolve) => {
+                    const img = new Image();
+                    img.src = "{{ url_for('static', filename='images/cassie-henderson-the-pink-chapter-background.webp') }}";
+                    img.onload = resolve;
+                })
+            ]).then(() => {
+                // Short delay to ensure smooth transition
+                setTimeout(() => {
+                    content.classList.add('fade-in');
+                }, 100);
+            }).catch(error => {
+                console.error('Error loading assets:', error);
+                // Fallback to show content even if loading fails
+                content.classList.add('fade-in');
+            });
+        });
+    </script>
+</body>
+</html>
