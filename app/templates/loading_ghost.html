@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cool girls cry | Cassie Henderson</title>
+  <link rel="preload" href="{{ url_for('static', filename='images/cassie-henderson-the-pink-chapter-background.webp') }}" as="image">
+  <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="{{ url_for('favicon') }}">
+  <link rel="preload" href="{{ url_for('static', filename='frames/ghost.webp') }}" as="image">
+  <link rel="preload" href="{{ url_for('static', filename='fonts/Lacquer-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ url_for('static', filename='fonts/Lacquer-Regular.woff') }}" as="font" type="font/woff" crossorigin>
+  <link rel="preload" href="{{ url_for('static', filename='fonts/Lacquer-Regular.ttf') }}" as="font" type="font/ttf" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Lacquer';
+      src: url("{{ url_for('static', filename='fonts/Lacquer-Regular.woff2') }}") format('woff2'),
+           url("{{ url_for('static', filename='fonts/Lacquer-Regular.woff') }}") format('woff'),
+           url("{{ url_for('static', filename='fonts/Lacquer-Regular.ttf') }}") format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    body, #wordsAnimation, #wordsAnimation::after {
+      font-family: 'Lacquer', cursive;
+    }
+
+    body {
+      background-color: #b182b0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #38383b;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.8;
+      z-index: -1;
+      background-image: url("{{ url_for('static', filename='images/cassie-henderson-the-pink-chapter-background.webp') }}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: contrast(110%) brightness(85%);
+    }
+    .animation-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    .animation-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ghost-static, .tear-animation {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      z-index: 1;
+      filter: drop-shadow(0 25px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .ghost-static {
+      background-image: url("{{ url_for('static', filename='frames/ghost.webp') }}");
+    }
+
+    .tear-animation {
+      background-image: url("{{ url_for('static', filename='frames/ghost_sprite.png') }}");
+      background-size: calc(49 * 100%) 100%; /* 49 frames * 100% width */
+      z-index: 5;
+    }
+
+    #wordsAnimation {
+      position: absolute;
+      top: calc(95% - 1.2em);
+      left: 0;
+      right: 0;
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 36px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      z-index: 10;
+      color: #38383b;
+      white-space: nowrap;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #wordsAnimation::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      z-index: -1;
+      filter: blur(7px);
+      opacity: 0.9;
+      transform: translateY(-5px);
+      color: rgba(0,0,0,0.35);
+      white-space: nowrap;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media (max-width: 767px) {
+      .animation-wrapper {
+        width: 90%;
+      }
+      #wordsAnimation {
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+      #wordsAnimation::after {
+        content: attr(data-text);
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+    }
+
+    @media (max-width: 590px) {
+      #wordsAnimation {
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        font-size: 8vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="animation-wrapper">
+    <div class="animation-container">
+      <div class="ghost-static"></div>
+      <div class="tear-animation"></div>
+    </div>
+    <div id="wordsAnimation" data-text=""></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOMContentLoaded event fired');
+      const content = document.querySelector('.animation-wrapper');
+      const ghostStatic = document.querySelector('.ghost-static');
+      const tearAnimation = document.querySelector('.tear-animation');
+      const wordsAnimation = document.getElementById('wordsAnimation');
+  
+      if (!content || !ghostStatic || !tearAnimation || !wordsAnimation) {
+        console.error('One or more required elements are missing');
+        return;
+      }
+  
+      console.log('All required elements found');
+  
+      Promise.all([
+        document.fonts.load("1em Lacquer"),
+        new Promise((resolve) => {
+          if (ghostStatic.complete) {
+            resolve();
+          } else {
+            ghostStatic.onload = resolve;
+          }
+        })
+      ]).then(() => {
+        console.log('Fonts and images loaded');
+        initializeAnimation();
+      }).catch(error => {
+        console.error('Error loading fonts or images:', error);
+        initializeAnimation();
+      });
+  
+      function initializeAnimation() {
+        console.log('Initializing animation');
+
+        const tearAnimation = document.querySelector('.tear-animation');
+        const wordsAnimation = document.getElementById('wordsAnimation');
+
+        if (!tearAnimation || !wordsAnimation) {
+          console.error('Required elements not found');
+          return;
+        }
+
+        // Start the tear animation
+        startTearAnimation(tearAnimation);
+
+        // Start the words animation immediately
+        startWordsAnimation(wordsAnimation);
+
+        // Check playlist status with a timeout
+        checkPlaylistStatusWithTimeout('{{ playlist_id }}', 0);
+      }
+
+      function startTearAnimation(tearAnimation) {
+        const frameCount = 49;
+        let currentFrame = 0;
+        let lastFrameTime = 0;
+        const frameDuration = 30; // milliseconds per frame
+
+        function animate(currentTime) {
+          if (!lastFrameTime) lastFrameTime = currentTime;
+
+          if (currentTime - lastFrameTime > frameDuration) {
+            const framePercentage = (currentFrame / (frameCount - 1)) * 100;
+            tearAnimation.style.backgroundPosition = `${framePercentage}% 0px`;
+            currentFrame = (currentFrame + 1) % frameCount;
+            lastFrameTime = currentTime;
+          }
+
+          requestAnimationFrame(animate);
+        }
+
+        console.log('Starting animation');
+        animate(0); // Start the animation
+      }
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+      function startWordsAnimation(wordsAnimation) {
+        const words = [
+          "Cutting bangs...",
+          "Calibrating wine intake levels...",
+          "Recharging emotional support snacks...",
+          "Buffering between crying sessions...",
+          "Loading tear ducts...",
+          "Leaving mum's texts on read...",
+          "Updating list of ex's flaws...",
+          "Crafting texts to send and instantly regret...",
+          "Seeking comfort food locations near you...",
+          "Practicing my 'I'm fine' face...",
+          "Compiling sad song lyrics to quote...",
+          "Organising a pity party...",
+          "Polishing off the good ice cream...",
+          "Scouring memes for emotional support...",
+          "Refreshing breakup cliches...",
+          "Summoning inner drama queen...",
+          "Enhancing social media stalking skills...",
+          "Foreseeing future as a cat lady...",
+          "Queuing sad shower playlists...",
+          "Unfollowing exes on Instagram...",
+          "Refollowing exes on Instagram...",
+          "Perfecting the art of the sigh...",
+          "Checking compatibility with fictional characters...",
+          "Rewatching F.R.I.E.N.D.S for the ninth time...",
+          "Debating whether to block or just mute...",
+          "Lighting ex's t-shirts on fire",
+        ];
+
+        // Separate the first word and shuffle the rest
+        const firstWord = words.shift();
+        shuffleArray(words);
+        words.unshift(firstWord);
+
+        let wordIndex = 0;
+
+        function changeWord() {
+          console.log('Changing word');
+          wordsAnimation.style.opacity = '0';
+          setTimeout(() => {
+            wordsAnimation.textContent = words[wordIndex];
+            wordsAnimation.setAttribute('data-text', words[wordIndex]);
+            wordsAnimation.style.opacity = '1';
+            wordIndex = (wordIndex + 1) % words.length;
+          }, 500);
+        }
+
+        changeWord();
+        setInterval(changeWord, 2500);
+      }
+
+      function checkPlaylistStatusWithTimeout(playlistId, attempt) {
+        console.log(`Checking playlist status for playlistId: ${playlistId}, attempt: ${attempt}`);
+
+        const maxAttempts = 10;
+        const timeout = 30000; // 30 seconds
+
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout')), timeout)
+        );
+
+        const fetchPromise = fetch('/create_playlist_background/' + playlistId)
+          .then(response => response.json())
+          .then(data => {
+            console.log(`Received data: ${JSON.stringify(data)}`);
+            if (data.status === 'ready') {
+              window.location.href = '/playlist_created?playlist_url=' + encodeURIComponent(data.playlist_url);
+            } else if (data.status === 'in_progress' && attempt < maxAttempts) {
+              setTimeout(() => checkPlaylistStatusWithTimeout(playlistId, attempt + 1), 6500);
+            } else {
+              throw new Error('Playlist creation failed or max attempts reached');
+            }
+          });
+
+        Promise.race([fetchPromise, timeoutPromise])
+          .catch(error => {
+            console.error("Error in playlist status check:", error);
+            const wordsAnimation = document.getElementById('wordsAnimation');
+            if (wordsAnimation) {
+              wordsAnimation.textContent = 'Playlist creation taking longer than expected. Please check your Spotify account.';
+            }
+          });
+      }
+
+      // Call initializeAnimation at the end of the DOMContentLoaded event handler
+      initializeAnimation();
+    });
+  </script>
+</body>
+</html>
